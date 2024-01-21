@@ -17,3 +17,5 @@ repos:
     rev: v0.0.1
     hooks:
     - id: rpmlint
+      args:
+        - --ignore-unused-rpmlintrc
