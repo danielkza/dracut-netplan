@@ -1,0 +1,13 @@
+rebuild_master:
+  steps:
+    - trigger_services:
+        project: home:danielkza:dracut-netplan
+        package: dracut-netplan
+    - rebuild_package:
+        project: home:danielkza:dracut-netplan
+        package: dracut-netplan
+  filters:
+    event: push
+    branches:
+      only:
+        - master
