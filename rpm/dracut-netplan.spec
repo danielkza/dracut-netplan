@@ -54,8 +54,8 @@ Netplan support for Dracut
 mkdir -p %{buildroot}/%{dracutconfdir}
 install -m 0644 src/dracut.conf.d/netplan.conf %{buildroot}/%{dracutconfdir}/netplan.conf
 
-mkdir -p %{buildroot}/%{dracutlibdir}/modules.d/40netplan/
-install -m 0755 src/dracut/modules.d/40netplan/*.sh %{buildroot}/%{dracutlibdir}/modules.d/40netplan/
+mkdir -p %{buildroot}/%{dracutlibdir}/modules.d/45netplan/
+install -m 0755 src/dracut/modules.d/45netplan/*.sh %{buildroot}/%{dracutlibdir}/modules.d/45netplan/
 
 %check
 
