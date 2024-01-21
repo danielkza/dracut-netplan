@@ -5,8 +5,8 @@ check() {
   [[ "${1}" = "-d" ]] && return 0
   command -v netplan >/dev/null || return 1
 
-  local f
-  for f in /etc/netplan/*.yaml; do
+  local _f
+  for _f in /etc/netplan/*.yaml; do
     return 0
   done
 
@@ -15,7 +15,8 @@ check() {
 }
 
 depends() {
-  local renderer=$(netplan get renderer)
+  local renderer
+  renderer=$(netplan get renderer)
   case "$renderer" in
   NetworkManager)
     echo network-manager ;;
