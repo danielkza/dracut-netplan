@@ -28,5 +28,5 @@ install() {
   inst "/usr/lib/netplan/generate"
   inst_multiple -o -H "/etc/netplan/*.yaml"
 
-  inst_hook initqueue 95 "${moddir}/netplan-generate.sh"
+  inst_hook initqueue/settled 95 "${moddir}/netplan-generate.sh"
 }
