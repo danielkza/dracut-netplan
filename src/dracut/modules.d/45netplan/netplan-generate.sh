@@ -6,3 +6,6 @@ if getargbool 0 rd.debug; then
 fi
 
 /usr/lib/netplan/generate
+
+mkdir -p /run/NetworkManager/initrd
+touch /run/NetworkManager/initrd/neednet
