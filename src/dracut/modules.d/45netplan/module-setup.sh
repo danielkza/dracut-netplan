@@ -29,6 +29,6 @@ install() {
   inst "/usr/lib/netplan/generate"
   inst_multiple -o -H "/etc/netplan/*.yaml"
 
+  inst_hook cmdline 90 "${moddir}/netplan-config.sh"
   inst_hook initqueue/settled 95 "${moddir}/netplan-generate.sh"
-  echo > "${initdir}/usr/libexec/nm-initrd-generator"
 }
