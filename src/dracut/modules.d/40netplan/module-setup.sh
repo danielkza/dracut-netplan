@@ -8,7 +8,7 @@ check() {
   local f
   for f in /etc/netplan/*.yaml; do
     return 0
-  fi
+  done
 
   echo "No files in /etc/netplan" >&2
   return 1
