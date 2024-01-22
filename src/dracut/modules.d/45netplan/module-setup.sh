@@ -47,7 +47,5 @@ install() {
     inst_simple -H "$src" "$dst"
   done < <(find "${tmp_root}/run" -not -type d)
 
-  if [ $? -eq 0 ]; then
-    echo "rd.neednet=1" > "${initdir}/etc/cmdline.d/10-netplan-net.conf"
-  fi
+  echo "rd.neednet=1" > "${initdir}/etc/cmdline.d/10-netplan-net.conf"
 }
