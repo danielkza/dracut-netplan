@@ -25,10 +25,47 @@ depends() {
   esac
 }
 
-install() {
-  inst "/usr/lib/netplan/generate"
-  inst_multiple -o -H "/etc/netplan/*.yaml"
+setup_nm_connections() {
+  local nm_conn_dir=/etc/NetworkManager/system-connections
 
-  # override it
-  inst_simple "${moddir}/netplan-generate.sh" /usr/libexec/nm-initrd-generator
+  local _f found=0
+  for _f in "${initdir}/run/NetworkManager/system-connections"/*.nmconnection; do
+    mkdir -p "${initdir}/${nm_conn_dir}/"
+    mv "$_f" "${initdir}/${nm_conn_dir}/"
+
+    found=1
+  done
+
+  [ $found -eq 1 ]
+}
+
+setup_networkd_connections() {
+  local sd_conn_dir=/etc/systemd/network
+
+  local _f found=0
+  for _f in "${initdir}/run/systemd/network"/*.*; do
+    mkdir -p "${initdir}/${sd_conn_dir}/"
+    mv "$_f" "${initdir}/${sd_conn_dir}/"
+
+    found=1
+  done
+
+  [ $found -eq 1 ]
+}
+
+install() {
+  inst_multiple -o -H "/etc/netplan/*.yaml"
+  netplan generate --root-dir "${initdir}"
+
+  renderer=$(netplan get renderer)
+  case "$renderer" in
+  NetworkManager)
+    setup_nm_connections ;;
+  networkd)
+    setup_networkd_connections ;;
+  esac
+
+  if [ $? -eq 0 ]; then
+    echo "rd.neednet=1" > "${initdir}/etc/cmdline.d/10-netplan-net.conf"
+  fi
 }
