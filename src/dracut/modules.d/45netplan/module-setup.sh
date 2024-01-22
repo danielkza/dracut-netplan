@@ -2,7 +2,7 @@
 # shellcheck disable=SC2154
 
 check() {
-  [[ "${1}" = "-d" ]] && return 0
+  [[ $hostonly ]] || return 1
   command -v netplan >/dev/null || return 1
 
   local _f
@@ -40,11 +40,10 @@ install() {
       continue
     fi
 
-    dst=$(sed "s!^${tmp_root}/run!${initdir}/etc!" <<< "$src")
+    dst=$(sed "s!^${tmp_root}/run!/etc!" <<< "$src")
     [ "$src" != "$dst" ] || continue
 
-    mkdir -p $(dirname "$dst")
-    inst_simple -H "$dst" "$src"
+    inst_simple -H "$src" "$dst"
   done < <(find "${tmp_root}/run" -not -type d)
 
   echo "rd.neednet=1" > "${initdir}/etc/cmdline.d/10-netplan-net.conf"
