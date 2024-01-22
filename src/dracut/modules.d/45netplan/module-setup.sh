@@ -26,8 +26,6 @@ depends() {
 }
 
 install() {
-  set -x
-
   inst_multiple -o -H "/etc/netplan/*.yaml"
 
   local tmp_root=$(mktemp -d --tmpdir dracut-netplan.XXXX)
@@ -46,12 +44,10 @@ install() {
     [ "$src" != "$dst" ] || continue
 
     mkdir -p $(dirname "$dst")
-    mv "$src" "$dst"
+    inst_simple -H "$src" "$dst"
   done < <(find "${tmp_root}/run" -not -type d)
 
   if [ $? -eq 0 ]; then
     echo "rd.neednet=1" > "${initdir}/etc/cmdline.d/10-netplan-net.conf"
   fi
-
-  set +x
 }
