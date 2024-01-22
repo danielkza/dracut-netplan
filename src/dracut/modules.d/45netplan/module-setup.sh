@@ -28,7 +28,8 @@ depends() {
 install() {
   inst_multiple -o -H "/etc/netplan/*.yaml"
 
-  local tmp_root=$(mktemp -d --tmpdir dracut-netplan.XXXX)
+  local tmp_root
+  tmp_root=$(mktemp -d --tmpdir dracut-netplan.XXXX)
   mkdir -p "${tmp_root}/etc/netplan"
   cp "${initdir}/etc/netplan"/*.yaml "${tmp_root}/etc/netplan/"
 
@@ -40,6 +41,7 @@ install() {
       continue
     fi
 
+    # shellcheck disable=SC2001
     dst=$(sed "s!^${tmp_root}/run!/etc!" <<< "$src")
     [ "$src" != "$dst" ] || continue
 
